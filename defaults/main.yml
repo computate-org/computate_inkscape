@@ -32,7 +32,7 @@ APP_ROOT: "{{ false if APP_PREFIX is regex('^/home') else true }}"
 APP_SRC: "{{ APP_PREFIX }}/src/{{ APP_NAME }}"
 APP_REPO_SSH: "git@gitlab.com:inkscape/inkscape.git"
 APP_REPO_HTTPS: "{{ APP_REPO_SSH | replace('git@gitlab.com:', 'https://gitlab.com/') }}"
-APP_TAG: INKSCAPE_1_4_BETA3
+APP_TAG: INKSCAPE_1_3_2
 APP_DESKTOP: "{{ APP_PREFIX }}/share/applications/{{ APP_NAME }}.desktop"
 APP_ICON: "{{ APP_SRC }}/build/resources/inkscape.png"
 APP_EXEC: "inkscape"
