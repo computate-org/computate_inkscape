@@ -1,0 +1,41 @@
+---
+APP_PYTHON: "{{ '/usr/bin/python' if lookup('file', '/usr/bin/python', errors='ignore') else '/usr/bin/python3' }}"
+APP_DEPENDENCIES_REDHAT:
+  - automake
+  - make
+  - cmake
+  - libtool
+  - git
+  - cairo-devel
+  - double-conversion-devel
+  - freetype-devel
+  - gdl
+  - glib2-devel
+  - gtk4-devel
+  - gsl-devel
+  - harfbuzz-devel
+  - libsigc++20-devel
+  - libsoup-devel
+  - libxml2-devel
+  - libxslt-devel
+  - pango
+  - poppler-devel
+  - poppler-glib-devel
+  - gc-devel
+  - glibmm24-devel
+  - gtkmm30-devel
+APP_DEPENDENCIES: "{{ APP_DEPENDENCIES_REDHAT if ansible_distribution_file_variety == 'RedHat' else APP_DEPENDENCIES_REDHAT }}"
+APP_NAME: inkscape
+APP_USER: "{{ lookup('env', 'USER') }}"
+APP_PREFIX: "/home/{{ APP_USER }}/.local"
+APP_ROOT: "{{ false if APP_PREFIX is regex('^/home') else true }}"
+APP_SRC: "{{ APP_PREFIX }}/src/{{ APP_NAME }}"
+APP_REPO_SSH: "git@gitlab.com:inkscape/inkscape.git"
+APP_REPO_HTTPS: "{{ APP_REPO_SSH | replace('git@gitlab.com:', 'https://gitlab.com/') }}"
+APP_TAG: INKSCAPE_1_4_BETA3
+APP_DESKTOP: "{{ APP_PREFIX }}/share/applications/{{ APP_NAME }}.desktop"
+APP_ICON: "{{ APP_SRC }}/build/resources/inkscape.png"
+APP_EXEC: "inkscape"
+APP_KEYWORDS: "drawing;graphics;"
+APP_CATEGORIES: "Drawing;Graphics;"
+

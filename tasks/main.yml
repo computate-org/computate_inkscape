@@ -1,0 +1,58 @@
+---
+- name: "Install dependencies as root: {{ APP_DEPENDENCIES | join(' ') }}"
+  ansible.builtin.package:
+    name: "{{ APP_DEPENDENCIES }}"
+  become: true
+  register: INSTALL_DEPENDENCIES
+  ignore_errors: true
+- name: "Install dependencies as user {{ APP_USER }}: {{ APP_DEPENDENCIES | join(' ') }}"
+  shell: "pkcon install -y {{ item }} | true"
+  loop: "{{ APP_DEPENDENCIES }}"
+  when: INSTALL_DEPENDENCIES.failed
+- name: Create the directory {{ APP_SRC }}
+  file:
+    name: "{{ APP_SRC }}"
+    state: directory
+  become: "{{ APP_ROOT }}"
+- name: Check for the {{ APP_NAME }} README file
+  stat:
+    path: "{{ APP_SRC }}/README.txt"
+  register: APP_README_PATH
+- name: "Clone the {{ APP_REPO_SSH }} source code into {{ APP_SRC }}"
+  ansible.builtin.git:
+    repo: "{{ APP_REPO_SSH }}"
+    dest: "{{ APP_SRC }}"
+    version: "{{ APP_TAG }}"
+  ignore_errors: true
+  when: not APP_README_PATH.stat.exists
+  register: CLONE_REPO
+- name: "Clone the {{ APP_REPO_HTTPS }} source code into {{ APP_SRC }}"
+  ansible.builtin.git:
+    repo: "{{ APP_REPO_HTTPS }}"
+    dest: "{{ APP_SRC }}"
+    version: "{{ APP_TAG }}"
+  when: not APP_README_PATH.stat.exists and CLONE_REPO.failed
+- name: Create the directory {{ APP_SRC }}/build
+  file:
+    name: "{{ APP_SRC }}/build"
+    state: directory
+  become: "{{ APP_ROOT }}"
+- name: Run env POTRACE_LIBRARIES={{ APP_PREFIX }}/lib POTRACE_INCLUDE_DIRS={{ APP_PREFIX }}/include cmake .. -DCMAKE_INSTALL_PREFIX={{ APP_PREFIX }} -DBOOST_STACKTRACE_USE_BACKTRACE=false
+  shell: env POTRACE_LIBRARIES={{ APP_PREFIX }}/lib POTRACE_INCLUDE_DIRS={{ APP_PREFIX }}/include cmake .. -DCMAKE_INSTALL_PREFIX={{ APP_PREFIX }}
+  args:
+    chdir: "{{ APP_SRC }}/build"
+- name: Run make -j $(nproc)
+  shell: make -j $(nproc)
+  args:
+    chdir: "{{ APP_SRC }}/build"
+- name: Run make install
+  shell: make install
+  args:
+    chdir: "{{ APP_SRC }}/build"
+  become: "{{ APP_ROOT }}"
+- name: "Create the launcher {{ APP_DESKTOP }}"
+  template:
+    src: app.desktop
+    dest: "{{ APP_DESKTOP }}"
+  become: "{{ APP_ROOT }}"
+
