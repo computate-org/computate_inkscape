@@ -24,3 +24,4 @@ cd ~/.ansible/roles/computate.computate_inkscape
 ansible-playbook install.yml
 ```
 
+If you have trouble with `boost-filesystem` or other boost dependencies when installing, try installing the [`computate_boost`](https://github.com/computate-org/computate_boost) playbook.
