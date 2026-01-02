@@ -2,6 +2,7 @@
 APP_PYTHON: "{{ '/usr/bin/python' if lookup('file', '/usr/bin/python', errors='ignore') else '/usr/bin/python3' }}"
 APP_DEPENDENCIES_REDHAT:
   - automake
+  - boost-filesystem
   - cairo-devel
   - cmake
   - double-conversion-devel
