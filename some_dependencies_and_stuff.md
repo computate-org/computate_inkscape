@@ -1,4 +1,4 @@
-Here are some dependencies that it *may* or *may not* need to install inkscape. If they are checked, they could be found on RHEL 10 in dnf and are in the playbook.
+Here are some dependencies that you *may* or *may not* need to install inkscape. If they are checked, they could be found on RHEL 10 in dnf and are in the playbook.
 
 - [ ] poppler-cairo
 

@@ -10,13 +10,14 @@ APP_DEPENDENCIES_REDHAT:
   - gdl
   - git
   - glib2-devel
-  # - glibmm24-devel
   - glibmm2.4-devel
-  - gtkmm3.0-devel
+  - glibmm24-devel
   - gsl-devel
   - gtk4-devel
+  - gtkmm3.0-devel
   - gtkmm30-devel
   - harfbuzz-devel
+  - lcms2-devel
   - libsigc++20-devel
   - libsoup-devel
   - libtool
