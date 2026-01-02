@@ -10,8 +10,8 @@ Here are some dependencies that you *may* or *may not* need to install inkscape.
 
 - [ ] libcdr-0.1
 
-- [x] glibmm-2.4
-- [x] gtkmm-3.0
+- [x] glibmm2.4-devel
+- [x] gtkmm3.0-devel
 - [ ] gdkmm-3.0
 
 ---
